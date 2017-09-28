@@ -48,8 +48,15 @@ class Observation
      * @ORM\Column(name="longitude", type="float")
      */
     private $longitude;
-
-
+	
+	/**
+     * One Observation has One User.
+     * @ORM\OneToOne(targetEntity="User")
+	 * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     */
+    private $user;
+	
+	
     /**
      * Get id
      *
@@ -154,6 +161,30 @@ class Observation
     public function getLongitude()
     {
         return $this->longitude;
+    }
+	
+	/**
+     * Set user
+     *
+     * @param int $user
+     *
+     * @return User
+     */
+    public function setUser($user)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return int
+     */
+    public function getUser()
+    {
+        return $this->user;
     }
 }
 

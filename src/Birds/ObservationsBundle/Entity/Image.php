@@ -34,6 +34,13 @@ class Image
      * @ORM\Column(name="alt", type="string", length=255, nullable=true)
      */
     private $alt;
+	
+	/**
+	 * One Image has One Observation.
+     * @ORM\OneToOne(targetEntity="Observation")
+	 * @ORM\JoinColumn(name="observation_id", referencedColumnName="id")
+     */
+    private $observation;
 
 
     /**
@@ -92,6 +99,30 @@ class Image
     public function getAlt()
     {
         return $this->alt;
+    }
+	
+	/**
+     * Set observation
+     *
+     * @param int $observation
+     *
+     * @return Observation
+     */
+    public function setObservation($observation)
+    {
+        $this->observation = $observation;
+
+        return $this;
+    }
+
+    /**
+     * Get observation
+     *
+     * @return int
+     */
+    public function getObservation()
+    {
+        return $this->observation;
     }
 }
 

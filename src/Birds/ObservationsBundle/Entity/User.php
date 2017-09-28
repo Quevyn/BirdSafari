@@ -3,7 +3,6 @@
 namespace Birds\ObservationsBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use FOS\UserBundle\Model\User as BaseUser;
 
 /**
  * User
@@ -11,7 +10,7 @@ use FOS\UserBundle\Model\User as BaseUser;
  * @ORM\Table(name="user")
  * @ORM\Entity(repositoryClass="Birds\ObservationsBundle\Repository\UserRepository")
  */
-class User extends BaseUser
+class User
 {
     /**
      * @var int
@@ -20,7 +19,7 @@ class User extends BaseUser
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    protected $id;
+    private $id;
 
     /**
      * @var string
@@ -36,7 +35,33 @@ class User extends BaseUser
      */
     private $lastname;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="mail", type="string", length=255, unique=true)
+     */
+    private $mail;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="pseudo", type="string", length=255, unique=true)
+     */
+    private $pseudo;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="password", type="string", length=255)
+     */
+    private $password;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="salt", type="string", length=255)
+     */
+    private $salt;
 
     /**
      * @var string
@@ -53,35 +78,21 @@ class User extends BaseUser
     private $birth;
 
     /**
-     * @var bool
+     * @var string
      *
-     * @ORM\Column(name="status", type="boolean")
+     * @ORM\Column(name="role", type="string", length=255)
      */
-    private $confirmationStatus;
+    private $role;
 
-    /**
-     * @var Image
+	/**
+     * @var naturalist
      *
-     * @ORM\OneToOne(targetEntity="Birds\ObservationsBundle\Entity\Image", cascade={"persist", "remove"})
+     * @ORM\Column(name="naturaliste", type="boolean", options={"default":true})
      */
-    private $image;
-
-
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        parent::__construct();
-        $this->confirmationStatus=false;
-    }
-
-
-
-
-
-
-    /**
+    private $naturalist;
+	
+    	
+	/**
      * Get id
      *
      * @return int
@@ -90,8 +101,6 @@ class User extends BaseUser
     {
         return $this->id;
     }
-
-
 
     /**
      * Set firstname
@@ -141,6 +150,101 @@ class User extends BaseUser
         return $this->lastname;
     }
 
+    /**
+     * Set mail
+     *
+     * @param string $mail
+     *
+     * @return User
+     */
+    public function setMail($mail)
+    {
+        $this->mail = $mail;
+
+        return $this;
+    }
+
+    /**
+     * Get mail
+     *
+     * @return string
+     */
+    public function getMail()
+    {
+        return $this->mail;
+    }
+
+    /**
+     * Set pseudo
+     *
+     * @param string $pseudo
+     *
+     * @return User
+     */
+    public function setPseudo($pseudo)
+    {
+        $this->pseudo = $pseudo;
+
+        return $this;
+    }
+
+    /**
+     * Get pseudo
+     *
+     * @return string
+     */
+    public function getPseudo()
+    {
+        return $this->pseudo;
+    }
+
+    /**
+     * Set password
+     *
+     * @param string $password
+     *
+     * @return User
+     */
+    public function setPassword($password)
+    {
+        $this->password = $password;
+
+        return $this;
+    }
+
+    /**
+     * Get password
+     *
+     * @return string
+     */
+    public function getPassword()
+    {
+        return $this->password;
+    }
+
+    /**
+     * Set salt
+     *
+     * @param string $salt
+     *
+     * @return User
+     */
+    public function setSalt($salt)
+    {
+        $this->salt = $salt;
+
+        return $this;
+    }
+
+    /**
+     * Get salt
+     *
+     * @return string
+     */
+    public function getSalt()
+    {
+        return $this->salt;
+    }
 
     /**
      * Set institution
@@ -191,50 +295,51 @@ class User extends BaseUser
     }
 
     /**
-     * Set confirmationStatus
+     * Set role
      *
-     * @param boolean $confirmationStatus
+     * @param string $role
      *
      * @return User
      */
-    public function setConfirmationStatus($confirmationStatus)
+    public function setRole($role)
     {
-        $this->confirmationStatus = $confirmationStatus;
+        $this->role = $role;
 
         return $this;
     }
 
     /**
-     * Get confirmationStatus
+     * Get role
      *
-     * @return boolean
+     * @return string
      */
-    public function getConfirmationStatus()
+    public function getRole()
     {
-        return $this->confirmationStatus;
+        return $this->role;
     }
-
-    /**
-     * Set image
+	
+	/**
+     * Set naturalist
      *
-     * @param \Birds\ObservationsBundle\Entity\Image $image
+     * @param boolean $naturalist
      *
      * @return User
      */
-    public function setImage(\Birds\ObservationsBundle\Entity\Image $image = null)
+    public function setNaturalist($naturalist)
     {
-        $this->image = $image;
+        $this->naturalist = $naturalist;
 
         return $this;
     }
 
     /**
-     * Get image
+     * Get naturalist
      *
-     * @return \Birds\ObservationsBundle\Entity\Image
+     * @return booleanmp
      */
-    public function getImage()
+    public function getNaturalist()
     {
-        return $this->image;
+        return $this->naturalist;
     }
 }
+
