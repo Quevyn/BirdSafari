@@ -61,7 +61,7 @@ class Observation
 	 /**
      * @var Image
      *
-     * @ORM\OneToOne(targetEntity="Birds\ObservationsBundle\Entity\Image", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Image", cascade={"persist", "remove"})
      */
     private $image;
 
@@ -212,7 +212,7 @@ class Observation
     /**
      * Get image
      *
-     * @return \Birds\ObservationsBundle\Entity\Image
+     * @return \AppBundle\Entity\Image
      */
     public function getImage()
     {
