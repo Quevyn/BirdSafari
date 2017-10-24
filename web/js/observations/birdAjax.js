@@ -8,11 +8,11 @@ $(function(){
        {
            var text= bird.nomVern;
 
-           //console.log(val.nomComplet);
+           console.log(bird.id);
            if($.trim(text) != "")
            {
                text = text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
-               $(".birdnames").append("<option value=" + text + ">" + text + "</option>");
+               $('.birdnames').append("<option value=\""+ bird.id + "\">" + text + "</option>");
            }
 
 

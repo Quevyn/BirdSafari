@@ -15,16 +15,9 @@ class ObservationFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('birdname',ChoiceType::class, array(
-            'attr'=>array("class"=>"birdnames"),
-            'choices'=>array('Pas d\'oiseau sélectionné'),
-            'choice_label' => function($value,$key,$index)
-                {
-                    return  $value;
-                },
-            'empty_data'=>""
+        $builder->add('bird',ChoiceType::class, array(
+            'attr'=>array("class"=>"birdnames")))
 
-            ))
             ->add('notSure',CheckboxType::class, array('required'=>false))
             ->add('image',ImageType::class, array('required'=>false))
             ->add('date',DateTimeType::class)

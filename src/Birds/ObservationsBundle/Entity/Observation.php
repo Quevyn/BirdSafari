@@ -4,6 +4,7 @@ namespace Birds\ObservationsBundle\Entity;
 
 use AppBundle\Entity\Image;
 use AppBundle\Entity\User;
+use Birds\ObservationsBundle\Repository\BirdsRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -26,10 +27,11 @@ class Observation
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="birdname", type="string", length=255, nullable=false)
+     * @ORM\ManyToOne(targetEntity="Birds\ObservationsBundle\Entity\Birds")
+     * @ORM\Column(name="bird", type="string", length=255, nullable=false)
+     * @ORM\JoinColumn(name="birds", referencedColumnName="id")
      */
-    private $birdname;
+    private $bird;
 
     /**
      * @var boolean
@@ -124,27 +126,27 @@ class Observation
     }
 
     /**
-     * Set birdname
+     * Set bird
      *
-     * @param string $birdname
+     * @param Birds $bird
      *
      * @return Observation
      */
-    public function setBirdname($birdname)
+    public function setBird($bird)
     {
-        $this->birdname = $birdname;
+        $this->bird = $bird;
 
         return $this;
     }
 
     /**
-     * Get birdname
+     * Get bird
      *
-     * @return string
+     * @return Birds
      */
-    public function getBirdname()
+    public function getBird()
     {
-        return $this->birdname;
+        return $this->bird;
     }
 
     /**
@@ -296,9 +298,8 @@ class Observation
      */
     public function convertBirdToString()
     {
-        $this->hour= $this->date->format('H');
-        if($this->getBirdname() instanceof Birds)
-            $this->setBirdname($this->birdname->fetchResult());
+        $this->hour= $this->date->format('H'); // Convert hour
+        
 
 
         if($this->getImage() != null)
@@ -306,6 +307,7 @@ class Observation
             $this->image = $this->getImage()->getId();
         }
     }
+
 
     /**
      * Set title

@@ -17,6 +17,8 @@ use Exporter\Writer\JsonWriter;
 use Exporter\Writer\XlsWriter;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Cache\Simple\FilesystemCache;
+use Symfony\Component\Config\Definition\Exception\Exception;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -414,7 +416,7 @@ class ObservationController extends Controller
         //Traitement
         if($request->isMethod("POST") && $form->handleRequest($request)->isValid())
         {
-            if($this->get('security.authorization_checker')->isGranted('ROLE_NATURALIST'))
+            if($this->get('security.authorization_checker')->isGranted('ROLE_NATURALIST')) // Message en fonction des droits.
             {
                 $observation->setValid(true);
                 $request->getSession()->getFlashBag()->add('success', 'Félicitation, Vous avez enregistré une nouvelle observation!!!' );
@@ -425,28 +427,39 @@ class ObservationController extends Controller
                 $request->getSession()->getFlashBag()->add('success', 'Félicitation, Vous avez enregistré une nouvelle observation!!! Après validation par un professionel, vous pourrez la voir sur la carte.' );
             }
 
-            $request->getSession()->getFlashBag()->add("error",$observation->getImage()->getUploadRootDir());
-            $observation->setUser($this->getUser());
-            if(is_array($observation->getBirdname()))
-            {
-
-                $observation->setBirdname($observation->getBirdname()['bird']->getlbNom());
-            }
-
+            $observation->setUser($this->getUser()); // Observation de l'utilisateur actuel.
             $em = $this->getDoctrine()->getManager();
 
-            $image = $observation->getImage();
+
+            //Upload to the dir i want.
 
 
-            file_put_contents("image.txt", "Created instance: src:". $image->getSrc(). " alt:" . $image->getAlt(). " Id:" . $image->getId(), FILE_APPEND);
+            //Change name to specific name with spec id
+
+            //
+
+            //Traitement de l'image en upload (s'il y en a une)
+            if($observation->getImage() != null)
+            {
+                $file = $observation->getImage()->getFile();
+                if($file instanceof UploadedFile && $file->getError()==0)
+                {
+
+                }
+                else
+                    throw new Exception("Uploading failed");
+            }
+
+            //file_put_contents("image.txt", "Created instance: src:". $image->getSrc(). " alt:" . $image->getAlt(). " Id:" . $image->getId(), FILE_APPEND);
 
             $em->persist($observation);
-            $image= $observation->getImage();
-            file_put_contents("image.txt", "Created instance: src:". $image->getSrc(). " alt:" . $image->getAlt(). " Id:" . $image->getId(), FILE_APPEND);
+            //$image= $observation->getImage();
+            //file_put_contents("image.txt", "Created instance: src:". $image->getSrc(). " alt:" . $image->getAlt(). " Id:" . $image->getId(), FILE_APPEND);
 
             $em->flush();
-            $image= $observation->getImage();
-            file_put_contents("image.txt", "Created instance: src:". $image->getSrc(). " alt:" . $image->getAlt(). " Id:" . $image->getId(), FILE_APPEND);
+
+            //$image= $observation->getImage();
+            //file_put_contents("image.txt", "Created instance: src:". $image->getSrc(). " alt:" . $image->getAlt(). " Id:" . $image->getId(), FILE_APPEND);
             return $this->redirectToRoute("birds_my_observations");
         }
 
@@ -541,7 +554,7 @@ class ObservationController extends Controller
     public function birdsJsonAction(Request $request)
     {
         $cache = new FilesystemCache();
-        $cache->delete('birds.names');
+       //$cache->delete('birds.names');
         if(!$cache->has('birds.names'))
         {
             $em = $this->getDoctrine()->getManager();
@@ -549,9 +562,18 @@ class ObservationController extends Controller
             $result = $repo->getAllByArray();
 
             $array = array();
+            $arrayOfValue = array(); //Enregistre les duplicats.
+
             foreach($result as $bird)
             {
-                $array []= $bird;
+                //test
+                if(!in_array($bird["nomVern"],$arrayOfValue)) //Retirer les duplicats.
+                //add
+                {
+                    $array []= $bird;
+                }
+                $arrayOfValue []= $bird["nomVern"];
+                //add value
             }
             $birdsJSON = json_encode($array);
             $cache->set('birds.names',$birdsJSON);

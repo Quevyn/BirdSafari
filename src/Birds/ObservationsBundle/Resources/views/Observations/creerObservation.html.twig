@@ -11,7 +11,7 @@
 	<div class="form-group">
 
         {{ form_start(form)  }}
-        {{ form_row(form.birdname, {'label':'Oiseau:'})  }}
+        {{ form_row(form.bird, {'label':'Oiseau:'})  }}
 		{{ form_row(form.notSure, {'label':'Je ne suis pas sûr de mon observation'})   }}
         {{ form_row(form.date, {'label':'Date de l\'observation:'}) }}
 		<div class="row">
@@ -56,8 +56,7 @@
 	<script src={{ asset("js/observations/creerObservation.js") }}></script>
 	<script src={{ asset("js/observations/positionSelector.js") }}></script>
 
-	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-	<script src={{ asset("js/observations/autocompleteBirds.js") }}></script>
+
 
 {% endblock %}
 

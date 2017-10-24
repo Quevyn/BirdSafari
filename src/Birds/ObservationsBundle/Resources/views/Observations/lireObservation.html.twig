@@ -1,7 +1,7 @@
 {% extends "@BirdsObservations/observationLayout.html.twig" %}
 
 {% block overallContent %}
-    {{ obs.birdname  }} par {{ obs.user.username }}
+    {{ obs.bird.nomVern  }} par {{ obs.user.username }}
     {% if obs.date is defined %}
 		{{ obs.date|date("d-m-Y") }}
 	{% endif %}

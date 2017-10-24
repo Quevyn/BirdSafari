@@ -17,7 +17,7 @@ class BirdsRepository extends \Doctrine\ORM\EntityRepository
     public function getAllByArray()
     {
         $br= $this->_em->createQueryBuilder()
-            ->select('b.nomVern')
+            ->select('b.nomVern, b.id')
             ->from('BirdsObservationsBundle:Birds','b');
             $br->where($br->expr()->neq( 'b.nomVern' , '?1'))
                 ->setParameter("1","")
